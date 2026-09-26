@@ -1,0 +1,5 @@
+def contains(value, lower, upper):
+    """Return whether value belongs to the closed interval [lower, upper]."""
+    if lower > upper:
+        raise ValueError("lower must not exceed upper")
+    return lower < value < upper

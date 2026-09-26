@@ -1,0 +1,31 @@
+import unittest
+
+from intervals import contains
+
+
+class IntervalTests(unittest.TestCase):
+    def test_lower_endpoint(self):
+        self.assertTrue(contains(2, 2, 5))
+
+    def test_upper_endpoint(self):
+        self.assertTrue(contains(5, 2, 5))
+
+    def test_singleton(self):
+        self.assertTrue(contains(3, 3, 3))
+
+    def test_interior(self):
+        self.assertTrue(contains(4, 2, 5))
+
+    def test_below(self):
+        self.assertFalse(contains(1, 2, 5))
+
+    def test_above(self):
+        self.assertFalse(contains(6, 2, 5))
+
+    def test_invalid_interval(self):
+        with self.assertRaises(ValueError):
+            contains(3, 5, 2)
+
+
+if __name__ == "__main__":
+    unittest.main()

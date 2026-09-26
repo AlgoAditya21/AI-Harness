@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "name": "tests",
+      "argv": ["{python}", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "kind": "unittest"
+    }
+  ],
+  "protected": ["pyproject.toml", "setup.cfg"],
+  "limits": {
+    "max_steps": 24,
+    "max_total_tokens": 50000,
+    "max_output_tokens": 4096,
+    "max_seconds": 180,
+    "command_timeout": 30
+  }
+}
