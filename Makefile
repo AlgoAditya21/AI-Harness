@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: setup run test demo lint
+.PHONY: setup run test demo lint tui
 
 setup:
 	@"$(PYTHON)" -m venv .venv
@@ -20,3 +20,6 @@ lint:
 	@.venv/bin/python -m ruff check harness tests
 	@.venv/bin/python -m ruff format --check harness tests
 	@.venv/bin/python -m mypy harness
+
+tui:
+	@.venv/bin/python -m harness.tui

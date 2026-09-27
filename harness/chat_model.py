@@ -163,6 +163,7 @@ class ChatModel:
             "tools": wrapped,
             "tool_choice": "auto",
             "stream": False,
+            "parallel_tool_calls": False,
         }
         if settings.token_limit_parameter == "max_tokens":
             parameters["max_tokens"] = limits.max_output_tokens
@@ -210,19 +211,23 @@ class ChatModel:
         if choice.get("finish_reason") not in ("stop", "tool_calls"):
             raise ModelError("Chat Completions did not return a completed response.")
         calls = message.get("tool_calls")
-        if (
-            choice["finish_reason"] != "tool_calls"
-            or not isinstance(calls, list)
-            or len(calls) != 1
-            or not isinstance(calls[0], dict)
-        ):
+        if choice["finish_reason"] != "tool_calls" or not isinstance(calls, list) or not calls:
             raise ModelActionError(
                 "Return exactly one function call from the supplied tools. "
                 "Use finish for completion, not plain text. Do not batch calls.",
                 input_tokens,
                 output_tokens,
             )
-        call = calls[0]
+        # Use only the first call when the model batches multiple calls.
+        call_raw = calls[0]
+        if not isinstance(call_raw, dict):
+            raise ModelActionError(
+                "Return exactly one function call from the supplied tools. "
+                "Use finish for completion, not plain text. Do not batch calls.",
+                input_tokens,
+                output_tokens,
+            )
+        call = call_raw
         if call.get("type") != "function" or not isinstance(call.get("function"), dict):
             raise ModelActionError("Select a function tool.", input_tokens, output_tokens)
         function = call["function"]

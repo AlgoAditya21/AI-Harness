@@ -1,0 +1,15 @@
+def divide(a, b):
+    """Return the result of dividing a by b. Raises ZeroDivisionError if b is zero."""
+    return a / b  # BUG: does not raise ZeroDivisionError for b == 0 when a is also 0
+
+
+def multiply(a, b):
+    """Return the product of a and b."""
+    return a * b
+
+
+def power(base, exp):
+    """Return base raised to exp. Raises ValueError for negative exponents."""
+    if exp < 0:
+        return base ** exp  # BUG: should raise ValueError for negative exponents
+    return base ** exp

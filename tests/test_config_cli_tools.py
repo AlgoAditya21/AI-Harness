@@ -1,3 +1,4 @@
+import io
 import json
 from pathlib import Path
 
@@ -156,3 +157,8 @@ def test_large_search_is_paginated_and_long_lines_are_readable(tmp_path: Path) -
     )
     assert result["content"] == "TAIL"
     assert result["next_offset"] is None
+
+
+def test_cli_tui_exit(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("sys.stdin", io.StringIO("0\n"))
+    assert main(["tui"]) == 0

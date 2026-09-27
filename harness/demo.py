@@ -13,6 +13,12 @@ DEMO_TASK = (
     "Fix contains(value, lower, upper) so both endpoints of a closed interval are included. "
     "Preserve rejection of reversed intervals and behavior for values outside the interval."
 )
+CALCULATOR_TASK = (
+    "Fix the bugs in calculator.py: "
+    "(1) divide(a, b) must raise ZeroDivisionError when b is zero; "
+    "(2) power(base, exp) must raise ValueError for negative exponents. "
+    "Do not change multiply(). All existing tests must pass."
+)
 DEMO_CONFIG = Config(
     checks=(
         Check("tests", ("{python}", "-m", "unittest", "discover", "-s", "tests", "-v"), "unittest"),
@@ -29,6 +35,19 @@ def create_demo_repository(destination: Path) -> None:
     (destination / "intervals.py").write_bytes(templates.joinpath("intervals.py.txt").read_bytes())
     (destination / "tests" / "test_intervals.py").write_bytes(
         templates.joinpath("test_intervals.py.txt").read_bytes()
+    )
+
+
+def create_calculator_demo(destination: Path) -> None:
+    """Create a fresh repository with a buggy calculator.py and failing tests."""
+    if destination.exists():
+        raise ModelError("Demo destination must not already exist")
+    destination.mkdir(parents=True)
+    (destination / "tests").mkdir()
+    templates = files("harness").joinpath("fixtures")
+    (destination / "calculator.py").write_bytes(templates.joinpath("calculator.py.txt").read_bytes())
+    (destination / "tests" / "test_calculator.py").write_bytes(
+        templates.joinpath("test_calculator.py.txt").read_bytes()
     )
 
 

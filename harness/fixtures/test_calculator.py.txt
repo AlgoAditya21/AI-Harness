@@ -1,0 +1,38 @@
+import unittest
+from calculator import divide, multiply, power
+
+
+class TestDivide(unittest.TestCase):
+    def test_normal_division(self):
+        self.assertAlmostEqual(divide(10, 2), 5.0)
+
+    def test_divide_by_zero(self):
+        with self.assertRaises(ZeroDivisionError):
+            divide(0, 0)
+
+    def test_divide_negative(self):
+        self.assertAlmostEqual(divide(-6, 3), -2.0)
+
+
+class TestMultiply(unittest.TestCase):
+    def test_multiply_positive(self):
+        self.assertEqual(multiply(3, 4), 12)
+
+    def test_multiply_zero(self):
+        self.assertEqual(multiply(5, 0), 0)
+
+
+class TestPower(unittest.TestCase):
+    def test_positive_exponent(self):
+        self.assertEqual(power(2, 3), 8)
+
+    def test_zero_exponent(self):
+        self.assertEqual(power(5, 0), 1)
+
+    def test_negative_exponent_raises(self):
+        with self.assertRaises(ValueError):
+            power(2, -1)
+
+
+if __name__ == "__main__":
+    unittest.main()

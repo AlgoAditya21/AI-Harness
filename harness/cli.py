@@ -78,6 +78,7 @@ def parser() -> argparse.ArgumentParser:
         )
     initialize = commands.add_parser("init-demo", help="Create a non-sensitive example repository")
     initialize.add_argument("--destination", type=Path, required=True)
+    commands.add_parser("tui", help="Launch the interactive terminal UI")
     return result
 
 
@@ -89,6 +90,10 @@ def _print_result(result: dict[str, Any]) -> int:
 def main(argv: Sequence[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
+        if args.command == "tui":
+            from harness.tui import main as tui_main
+
+            return tui_main()
         if args.command == "init-demo":
             create_demo_repository(args.destination)
             print(json.dumps({"repository": str(args.destination.resolve())}))
